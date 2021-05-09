@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Reviews list</title>
+</head>
+<body>
+
+<table border="1">
+    <thead>
+    <tr>
+        <td>Name Author</td>
+        <td>Comment</td>
+        <td>Date added</td>
+        <td>Status show</td>
+        <td>Select delete</td>
+    </tr>
+    </thead>
+    <tbody>
+    <th:block th:each="review : ${reviews}">
+        <tr>
+            <td th:text="${review.nameAuthor} + ${review.surnameAuthor} + ${review.patronymicAuthor}"></td>
+            <td th:text="${review.comment}"></td>
+            <td th:text="${review.dateAdded}"></td>
+            <td>
+                <input th:checked="${review.statusShow}" type="checkbox">
+            </td>
+            <td>
+                <input form="checked_delete_user" th:name="idCheckedDelete" th:value="${review.id}"
+                       type="checkbox">
+            </td>
+        </tr>
+    </th:block>
+    </tbody>
+</table>
+
+<form id="checked_delete_user" th:action="@{/administrator/reviews/delete}" method="post">
+    <input type="submit" value="Delete selected">
+</form>
+
+<div th:if="${reviews.size() > 0}" class="pagination"
+     th:each="pageNumber : ${pageNumbers}">
+    <a th:href="@{/administrator/reviews(page=${pageNumber})}"
+       th:text="${pageNumber}"
+       th:class="${pageNumber} ? active"></a>
+</div>
+<div>
+    <a th:href="@{/administrator/users}">list user</a>
+</div>
+</body>
+</html>

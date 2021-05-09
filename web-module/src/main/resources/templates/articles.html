@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Articles list</title>
+</head>
+<body>
+<a th:href="@{/customer/profile}">profile</a>
+<table border="1">
+    <thead>
+    <tr>
+        <td>Date added</td>
+        <td>Name</td>
+        <td>Author</td>
+        <td>Summary</td>
+        <td>Content</td>
+    </tr>
+    </thead>
+    <tbody>
+    <th:block th:each="article : ${articles}">
+        <tr>
+            <td th:text="${article.date}"></td>
+            <td th:text="${article.name}"></td>
+            <td th:text="${article.nameAuthor} + ${article.surnameAuthor}"></td>
+            <td th:text="${article.summary}"></td>
+            <td>
+                <a th:href="@{/customer/article(id=${article.id})}">more details</a>
+            </td>
+        </tr>
+    </th:block>
+    </tbody>
+</table>
+
+<div th:if="${articles.size() > 0}" class="pagination"
+     th:each="pageNumber : ${pageNumbers}">
+    <a th:href="@{/customer/articles(page=${pageNumber})}"
+       th:text="${pageNumber}"
+       th:class="${pageNumber} ? active"></a>
+</div>
+</body>
+<span sec:authorize="isAuthenticated()">
+   Logged user: <span sec:authentication="name"></span>
+Role: <span sec:authentication="principal.authorities"></span>
+    <a th:href="@{/logout}">logout</a>
+</span>
+</html>

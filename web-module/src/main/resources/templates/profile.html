@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+</head>
+<body>
+<form action="#" th:action="@{/customer/profile-update}" th:object="${user}" method="post">
+    <input type="text" th:field="*{name}" th:text="${user.name}"/>
+    <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name Error</p>
+    <input type="text" th:field="*{surname}" th:text="${user.surname}"/>
+    <p th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">surname Error</p>
+    <input type="text" th:field="*{address}" th:text="${user.address}"/>
+    <p th:if="${#fields.hasErrors('address')}" th:errors="*{address}">address Error</p>
+    <input type="text" th:field="*{telephone}" th:text="${user.telephone}"/>
+    <p th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}">telephone Error</p>
+
+    <input th:name="idUser" th:value="${user.id}" type="hidden">
+    <button type="submit">Submit</button>
+</form>
+
+<form th:action="@{/customer/profile-update-password}" method="post">
+    <input th:name="idUser" th:value="${user.id}" type="hidden">
+    <input type="submit" value="Generation password">
+</form>
+</body>
+</html>
