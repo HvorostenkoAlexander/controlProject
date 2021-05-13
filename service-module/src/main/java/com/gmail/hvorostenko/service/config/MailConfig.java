@@ -8,6 +8,9 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import java.util.Properties;
 
+import static com.gmail.hvorostenko.service.constant.MailConst.MAIL_DEBUG_CONST;
+import static com.gmail.hvorostenko.service.constant.MailConst.MAIL_PROTOCOL_CONST;
+
 @Configuration
 public class MailConfig {
     @Value("${spring.mail.host}")
@@ -36,11 +39,9 @@ public class MailConfig {
         mailSender.setPort(port);
         mailSender.setUsername(username);
         mailSender.setPassword(password);
-
         Properties properties = mailSender.getJavaMailProperties();
-
-        properties.setProperty("mail.transport.protocol", protocol);
-        properties.setProperty("mail.debug", debug);
+        properties.setProperty(MAIL_PROTOCOL_CONST, protocol);
+        properties.setProperty(MAIL_DEBUG_CONST, debug);
         return mailSender;
     }
 }

@@ -4,8 +4,10 @@ import com.gmail.hvorostenko.repository.model.User;
 import com.gmail.hvorostenko.service.PageService;
 import com.gmail.hvorostenko.service.RoleService;
 import com.gmail.hvorostenko.service.UserService;
+import com.gmail.hvorostenko.service.model.PageDTO;
 import com.gmail.hvorostenko.service.model.RoleDTO;
 import com.gmail.hvorostenko.service.model.UserDTO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,25 +21,18 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/administrator")
+@RequiredArgsConstructor
 public class AdministratorController {
 
     private final UserService userService;
     private final RoleService roleService;
-    private final PageService<User> pageSepvise;
 
-    public AdministratorController(UserService userService, RoleService roleService, PageService<User> pageSepvise) {
-        this.userService = userService;
-        this.roleService = roleService;
-        this.pageSepvise = pageSepvise;
-    }
 
     @GetMapping("/users")
     public String getUsersPage(Model model, @RequestParam(name = "page", defaultValue = "1") Integer pageCurrent) {
-        List<UserDTO> users = userService.findAllSortEmail(pageCurrent);
+        PageDTO<UserDTO> pageDTO = userService.findAllSortEmail(pageCurrent);
+        model.addAttribute("page", pageDTO);
         List<RoleDTO> roles = roleService.findAll();
-        List<Integer> pageNumbers = pageSepvise.countPage(new User());
-        model.addAttribute("pageNumbers", pageNumbers);
-        model.addAttribute("users", users);
         model.addAttribute("roles", roles);
         return "users";
     }

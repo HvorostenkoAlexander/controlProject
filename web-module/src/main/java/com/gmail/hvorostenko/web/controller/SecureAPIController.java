@@ -10,12 +10,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class SecureAPIController {
     private final ArticleService articleService;
-
-    public SecureAPIController(ArticleService articleService) {
-        this.articleService = articleService;
-    }
 
     @GetMapping("/articles")
     public List<ArticleDTO> getArticles() {

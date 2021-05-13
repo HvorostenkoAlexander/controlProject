@@ -4,10 +4,13 @@ import com.gmail.hvorostenko.repository.RoleRepository;
 import com.gmail.hvorostenko.repository.UserRepository;
 import com.gmail.hvorostenko.repository.model.Role;
 import com.gmail.hvorostenko.repository.model.User;
+import com.gmail.hvorostenko.service.PageService;
 import com.gmail.hvorostenko.service.UserService;
 import com.gmail.hvorostenko.service.converter.UserConvertor;
 import com.gmail.hvorostenko.service.email.MailSender;
+import com.gmail.hvorostenko.service.model.PageDTO;
 import com.gmail.hvorostenko.service.model.UserDTO;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,19 +27,15 @@ import static com.gmail.hvorostenko.repository.constant.ConstRepository.CONDITIO
 import static com.gmail.hvorostenko.repository.constant.ConstRepository.LENGTH_OF_PASSWORD_GENERATION;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserConvertor userConvertor;
     private final MailSender mailSender;
     private final RoleRepository roleRepository;
+    private final PageService<User> pageService;
 
-    public UserServiceImpl(UserRepository userRepository, UserConvertor userConvertor, MailSender mailSender, RoleRepository roleRepository) {
-        this.userRepository = userRepository;
-        this.userConvertor = userConvertor;
-        this.mailSender = mailSender;
-        this.roleRepository = roleRepository;
-    }
 
     @Override
     @Transactional
@@ -51,9 +50,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public List<UserDTO> findAllSortEmail(Integer pageCurrent) {
+    public PageDTO findAllSortEmail(Integer pageCurrent) {
+        PageDTO<UserDTO> pageDTO = new PageDTO();
         List<User> users = userRepository.findAllSortEmail(pageCurrent);
-        return userConvertor.convert(users);
+        List<UserDTO> userDTO = userConvertor.convert(users);
+        pageDTO.getEntityList().addAll(userDTO);
+        List<Integer> pageNumbers = pageService.countPage(new User());
+        pageDTO.getPageNumbers().addAll(pageNumbers);
+        return pageDTO;
     }
 
     @Override

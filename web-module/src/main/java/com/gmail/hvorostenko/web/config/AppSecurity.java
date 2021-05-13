@@ -2,6 +2,8 @@ package com.gmail.hvorostenko.web.config;
 
 import com.gmail.hvorostenko.service.model.RoleUserEnum;
 import com.gmail.hvorostenko.web.config.handler.AppSuccessHandler;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -9,25 +11,22 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @EnableWebSecurity
 @Configuration
-@Order
+@Order(1)
+@RequiredArgsConstructor
 public class AppSecurity extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
-    private final PasswordEncoder passwordEncoder;
-
-    public AppSecurity(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
-        this.userDetailsService = userDetailsService;
-        this.passwordEncoder = passwordEncoder;
-    }
+    private final PasswordEncoder encoder;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService)
-                .passwordEncoder(passwordEncoder);
+                .passwordEncoder(encoder);
     }
 
     @Override
@@ -37,7 +36,7 @@ public class AppSecurity extends WebSecurityConfigurerAdapter {
                 .hasAuthority(RoleUserEnum.ADMINISTRATOR.name())
                 .antMatchers("/customer/**")
                 .hasAuthority(RoleUserEnum.CUSTOMER_USER.name())
-                .antMatchers("/", "/login", "/denied-page")
+                .antMatchers("/","/login", "/denied-page")
                 .permitAll()
                 .and()
                 .formLogin()
@@ -54,4 +53,6 @@ public class AppSecurity extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .disable();
     }
+
+
 }

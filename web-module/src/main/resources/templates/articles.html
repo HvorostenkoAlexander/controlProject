@@ -18,7 +18,7 @@
     </tr>
     </thead>
     <tbody>
-    <th:block th:each="article : ${articles}">
+    <th:block th:each="article : ${page.entityList}">
         <tr>
             <td th:text="${article.date}"></td>
             <td th:text="${article.name}"></td>
@@ -32,7 +32,7 @@
     </tbody>
 </table>
 
-<div th:if="${articles.size() > 0}" class="pagination"
+<div th:if="${page.entityList.size() > 0}" class="pagination"
      th:each="pageNumber : ${pageNumbers}">
     <a th:href="@{/customer/articles(page=${pageNumber})}"
        th:text="${pageNumber}"

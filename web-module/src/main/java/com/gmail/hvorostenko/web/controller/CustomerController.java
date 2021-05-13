@@ -7,7 +7,9 @@ import com.gmail.hvorostenko.service.PageService;
 import com.gmail.hvorostenko.service.UserService;
 import com.gmail.hvorostenko.service.model.ArticleDTO;
 import com.gmail.hvorostenko.service.model.CommentDTO;
+import com.gmail.hvorostenko.service.model.PageDTO;
 import com.gmail.hvorostenko.service.model.UserDTO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,26 +21,18 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/customer")
+@RequiredArgsConstructor
 public class CustomerController {
 
-    private final PageService<Article> pageSepvise;
     private final ArticleService articleService;
     private final CommentService commentService;
     private final UserService userService;
 
-    public CustomerController(PageService<Article> pageSepvise, ArticleService articleService, CommentService commentService, UserService userService) {
-        this.pageSepvise = pageSepvise;
-        this.articleService = articleService;
-        this.commentService = commentService;
-        this.userService = userService;
-    }
 
     @GetMapping("/articles")
     public String getArticlesPage(Model model, @RequestParam(name = "page", defaultValue = "1") Integer pageCurrent) {
-        List<ArticleDTO> articles = articleService.findAllByPage(pageCurrent);
-        List<Integer> pageNumbers = pageSepvise.countPage(new Article());
-        model.addAttribute("pageNumbers", pageNumbers);
-        model.addAttribute("articles", articles);
+        PageDTO<ArticleDTO> pageDTO = articleService.findAllSortDate(pageCurrent);
+        model.addAttribute("page", pageDTO);
         return "articles";
     }
 

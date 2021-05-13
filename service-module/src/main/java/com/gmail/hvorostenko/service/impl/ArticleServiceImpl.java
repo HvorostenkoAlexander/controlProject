@@ -5,31 +5,37 @@ import com.gmail.hvorostenko.repository.UserRepository;
 import com.gmail.hvorostenko.repository.model.Article;
 import com.gmail.hvorostenko.repository.model.User;
 import com.gmail.hvorostenko.service.ArticleService;
+import com.gmail.hvorostenko.service.PageService;
 import com.gmail.hvorostenko.service.converter.ArticleConvertor;
 import com.gmail.hvorostenko.service.model.ArticleDTO;
+import com.gmail.hvorostenko.service.model.PageDTO;
+import com.gmail.hvorostenko.service.model.UserDTO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ArticleServiceImpl implements ArticleService {
 
     private final ArticleRepository articleRepository;
     private final ArticleConvertor articleConvertor;
     private final UserRepository userRepository;
+    private final PageService<Article> pageService;
 
-    public ArticleServiceImpl(ArticleRepository articleRepository, ArticleConvertor articleConvertor, UserRepository userRepository) {
-        this.articleRepository = articleRepository;
-        this.articleConvertor = articleConvertor;
-        this.userRepository = userRepository;
-    }
 
     @Override
     @Transactional
-    public List<ArticleDTO> findAllByPage(Integer pageCurrent) {
+    public PageDTO<ArticleDTO> findAllSortDate(Integer pageCurrent) {
+        PageDTO<ArticleDTO> pageDTO = new PageDTO();
         List<Article> articles = articleRepository.findAll(pageCurrent);
-        return articleConvertor.convert(articles);
+        List<ArticleDTO> articleDTO = articleConvertor.convert(articles);
+        pageDTO.getEntityList().addAll(articleDTO);
+        List<Integer> pageNumbers = pageService.countPage(new Article());
+        pageDTO.getPageNumbers().addAll(pageNumbers);
+        return pageDTO;
     }
 
     @Override

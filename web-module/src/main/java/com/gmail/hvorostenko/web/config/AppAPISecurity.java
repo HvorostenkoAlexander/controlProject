@@ -1,6 +1,7 @@
 package com.gmail.hvorostenko.web.config;
 
 import com.gmail.hvorostenko.service.model.RoleUserEnum;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -12,14 +13,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
-@Order(1)
+@Order
+@RequiredArgsConstructor
 public class AppAPISecurity extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
-
-    public AppAPISecurity(UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
-    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

@@ -1,6 +1,7 @@
 package com.gmail.hvorostenko.service.pagination;
 
 import com.gmail.hvorostenko.service.PageService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -14,12 +15,9 @@ import static com.gmail.hvorostenko.repository.constant.ConstRepository.MAX_RESU
 
 
 @Service
-public class Page<T> implements PageService<T> {
+@RequiredArgsConstructor
+public class PageServiceImpl<T> implements PageService<T> {
     private final EntityManager entityManager;
-
-    public Page(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
 
     @Override
     public List<Integer> countPage(T entity) {

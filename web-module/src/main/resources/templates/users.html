@@ -25,7 +25,7 @@
             </tr>
             </thead>
             <tbody>
-            <th:block th:each="user : ${users}">
+            <th:block th:each="user : ${page.entityList}">
                 <tr>
                     <td th:text="${user.name}"></td>
                     <td th:text="${user.surname}"></td>
@@ -80,8 +80,8 @@
     <p th:text="${updatePasswordUserDTO.size()}"> number of records deleted </p>
 </div>
 
-<div th:if="${users.size() > 0}" class="pagination"
-     th:each="pageNumber : ${pageNumbers}">
+<div th:if="${page.entityList.size() > 0}" class="pagination"
+     th:each="pageNumber : ${page.pageNumbers}">
     <a th:href="@{/administrator/users(page=${pageNumber})}"
        th:text="${pageNumber}"
        th:class="${pageNumber} ? active"></a>
