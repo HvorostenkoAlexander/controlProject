@@ -1,7 +1,8 @@
 package com.gmail.hvorostenko.repository.impl;
 
-import com.gmail.hvorostenko.repository.ArticleRepository;
+import com.gmail.hvorostenko.repository.ItemRepository;
 import com.gmail.hvorostenko.repository.model.Article;
+import com.gmail.hvorostenko.repository.model.Item;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
@@ -12,10 +13,10 @@ import static com.gmail.hvorostenko.repository.constant.ConstRepository.CONDITIO
 import static com.gmail.hvorostenko.repository.constant.ConstRepository.MAX_RESULTS_CONST;
 
 @Repository
-public class ArticleRepositoryImpl extends GenericRepositoryImpl<Long, Article> implements ArticleRepository {
+public class ItemRepositoryImpl  extends GenericRepositoryImpl<Long, Item> implements ItemRepository {
     @Override
-    public List<Article> findAll(Integer startPosition) {
-        String queryString = "select a from Article as a join fetch a.user order by a.date desc";
+    public List<Item> findAll(Integer startPosition) {
+        String queryString = "select i from Item as i order by i.name desc";
         Query query = entityManager.createQuery(queryString);
         if (startPosition != CONDITION_ZERO) {
             int firstResult = (startPosition * MAX_RESULTS_CONST) - MAX_RESULTS_CONST;
@@ -24,16 +25,17 @@ public class ArticleRepositoryImpl extends GenericRepositoryImpl<Long, Article> 
             query.setFirstResult(startPosition);
         }
         query.setMaxResults(MAX_RESULTS_CONST);
-        List<Article> articles = query.getResultList();
-        return articles;
+        List<Item> items = query.getResultList();
+        return items;
     }
 
     @Override
-    public int delete(List<String> idArticles) {
-        List<Long> id = idArticles.stream().map(Long::parseLong).collect(Collectors.toList());
-        String queryString = "delete from Article as a where a.id in :id";
+    public int delete(List<String> idItems) {
+        List<Long> id = idItems.stream().map(Long::parseLong).collect(Collectors.toList());
+        String queryString = "delete from Item as i where i.id in :id";
         Query query = entityManager.createQuery(queryString);
         query.setParameter("id", id);
         return query.executeUpdate();
     }
+
 }

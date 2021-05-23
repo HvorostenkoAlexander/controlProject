@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="https://www.thymeleaf.org/"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>items</title>
+</head>
+<body>
+<table border="1">
+    <thead>
+    <tr>
+        <td>Name</td>
+        <td>Unique number</td>
+        <td>Price</td>
+        <td>Summary</td>
+        <td>Details</td>
+        <td>Delete selected</td>
+        <td>Copy selected</td>
+    </tr>
+    </thead>
+    <tbody>
+    <th:block th:each="item : ${page.entityList}">
+        <tr>
+            <td th:text="${item.name}"></td>
+            <td th:text="${item.uuid}"></td>
+            <td th:text="${item.price}"></td>
+            <td th:text="${item.summary}"></td>
+            <td>
+                <a th:href="@{/items/id(id=${item.id})}">more details</a>
+            </td>
+            <td>
+                <div sec:authorize="hasAuthority('CUSTOMER_USER')">
+                    Сurrent user is customer
+                </div>
+                <div sec:authorize="hasAuthority('SALE_USER')">
+                    <input form="checked_delete_item" th:name="idCheckedDelete" th:value="${item.id}"
+                           type="checkbox">
+                </div>
+            </td>
+            <td>
+                <div sec:authorize="hasAuthority('CUSTOMER_USER')">
+                    Сurrent user is customer
+                </div>
+                <div sec:authorize="hasAuthority('SALE_USER')">
+                    <input form="checked_copy_item" th:name="idCheckedCopy" th:value="${item.id}"
+                           type="checkbox">
+                </div>
+            </td>
+        </tr>
+    </th:block>
+    </tbody>
+</table>
+<div sec:authorize="hasAuthority('SALE_USER')">
+    <form  id="checked_delete_item" th:action="@{/items/delete}" method="post">
+        <input type="submit" value="Delete selected">
+    </form>
+    <form id="checked_copy_item" th:action="@{/items/add-copy}" method="get">
+        <input type="submit" value="Copy new article">
+    </form>
+</div>
+
+<div th:if="${page.entityList.size() > 0}" class="pagination"
+     th:each="pageNumber : ${page.pageNumbers}">
+    <a th:href="@{/items/(page=${pageNumber})}"
+       th:text="${pageNumber}"
+       th:class="${pageNumber} ? active"></a>
+</div>
+</body>
+<span sec:authorize="isAuthenticated()">
+   Logged user: <span sec:authentication="name"></span>
+Role: <span sec:authentication="principal.authorities"></span>
+    <a th:href="@{/logout}">logout</a>
+</span>
+</body>
+</html>

@@ -19,7 +19,7 @@ import java.security.Principal;
 import java.util.List;
 
 @Controller
-@RequestMapping("/administrator/reviews")
+@RequestMapping("/reviews")
 @RequiredArgsConstructor
 public class ReviewController {
 
@@ -34,7 +34,7 @@ public class ReviewController {
     }
 
     @PostMapping("/delete")
-    public RedirectView deleteUser(@RequestParam("idCheckedDelete") List<String> idReview,
+    public RedirectView deleteReview(@RequestParam("idCheckedDelete") List<String> idReview,
                                    Principal principal,
                                    final RedirectAttributes redirectAttributes) {
         if (!idReview.isEmpty()) {

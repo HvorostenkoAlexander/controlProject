@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface CommentService {
     List<CommentDTO> findAllByArticle(String id);
+    Integer delete(List<String> idComments);
 }

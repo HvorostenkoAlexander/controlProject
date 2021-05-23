@@ -1,23 +1,32 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<html lang="en" xmlns:th="https://www.thymeleaf.org/"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
     <title>Article</title>
 </head>
 <body>
-<div>
-    <data th:text="${article.date}"></data>
-    <h3 th:text="${article.name}"></h3>
-    <text th:text="${article.content}"></text>
-    <p th:text="${article.nameAuthor}"></p>
-</div>
-
+<form action="#" th:action="@{/articles/update}" th:object="${article}" method="post">
+    <div>
+        <p th:text="${article.name}"></p>
+        <input sec:authorize="hasAuthority('SALE_USER')" type="text" th:field="*{name}"/>
+        <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name Error</p>
+        <p  th:text="${article.content}"></p>
+        <input sec:authorize="hasAuthority('SALE_USER')" type="text" th:field="*{content}"/>
+        <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}">content Error</p>
+        <data th:text="${article.date}"></data>
+        <p th:text="${article.nameAuthor}"></p>
+    </div>
+    <input th:name="idArticle" th:value="${article.id}" type="hidden">
+    <button sec:authorize="hasAuthority('SALE_USER')" type="submit">Submit</button>
+</form>
 <table border="1">
     <thead>
     <tr>
         <td>Date added</td>
         <td>Author</td>
         <td>Content</td>
+        <td>Delete selected</td>
     </tr>
     </thead>
     <tbody>
@@ -26,9 +35,23 @@
             <td th:text="${comment.date}"></td>
             <td th:text="${comment.user.name} + ${comment.user.surname}"></td>
             <td th:text="${comment.content}"></td>
+            <td>
+                <div sec:authorize="hasAuthority('CUSTOMER_USER')">
+                    Сurrent user is customer
+                </div>
+                <div sec:authorize="hasAuthority('SALE_USER')">
+                    <input form="checked_delete_comment" th:name="idCheckedDelete" th:value="${comment.id}"
+                           type="checkbox">
+                </div>
+            </td>
         </tr>
     </th:block>
     </tbody>
 </table>
+<div sec:authorize="hasAuthority('SALE_USER')">
+    <form id="checked_delete_comment" th:action="@{/comments/delete}" method="post">
+        <input type="submit" value="Delete selected">
+    </form>
+</div>
 </body>
 </html>

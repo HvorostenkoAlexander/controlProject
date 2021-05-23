@@ -1,45 +1,45 @@
 package com.gmail.hvorostenko.repository.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.math.BigDecimal;
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity
-@Table(name = "comments")
+@Table(name = "items")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Comment {
+public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
     @Column
-    private Date date;
+    private String uuid;
     @Column
-    private String content;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "article_id", nullable = false)
-    private Article article;
+    private String name;
+    @Column
+    private BigDecimal price;
+    @Column
+    private String summary;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Comment comment = (Comment) o;
-        return id.equals(comment.id) && date.equals(comment.date);
+        Item item = (Item) o;
+        return id.equals(item.id) && uuid.equals(item.uuid);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, date);
+        return Objects.hash(id, uuid);
     }
 }

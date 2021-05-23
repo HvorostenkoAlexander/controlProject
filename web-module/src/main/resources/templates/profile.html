@@ -5,7 +5,7 @@
     <title>Profile</title>
 </head>
 <body>
-<form action="#" th:action="@{/customer/profile-update}" th:object="${user}" method="post">
+<form action="#" th:action="@{/profile/update}" th:object="${user}" method="post">
     <input type="text" th:field="*{name}" th:text="${user.name}"/>
     <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name Error</p>
     <input type="text" th:field="*{surname}" th:text="${user.surname}"/>
@@ -19,7 +19,7 @@
     <button type="submit">Submit</button>
 </form>
 
-<form th:action="@{/customer/profile-update-password}" method="post">
+<form th:action="@{/profile/update-password}" method="post">
     <input th:name="idUser" th:value="${user.id}" type="hidden">
     <input type="submit" value="Generation password">
 </form>

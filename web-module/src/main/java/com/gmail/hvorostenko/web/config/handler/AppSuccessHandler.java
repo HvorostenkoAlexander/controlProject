@@ -23,10 +23,13 @@ public class AppSuccessHandler implements AuthenticationSuccessHandler {
             UserLogin userLogin = (UserLogin) authentication.getPrincipal();
             logger.info("User with login: " + userLogin.getUsername());
             if (userLogin.getUser().getRole().getName().name().equals(RoleUserEnum.ADMINISTRATOR.name())) {
-                httpServletResponse.sendRedirect("/administrator/users");
+                httpServletResponse.sendRedirect("/users");
             }
-            if (userLogin.getUser().getRole().getName().name().equals(RoleUserEnum.CUSTOMER_USER.name())) {
-                httpServletResponse.sendRedirect("/customer/articles");
+            if (userLogin.getUser().getRole().getName().name()
+                    .equals(RoleUserEnum.CUSTOMER_USER.name()) ||
+                    userLogin.getUser().getRole().getName().name()
+                            .equals(RoleUserEnum.SALE_USER.name())) {
+                httpServletResponse.sendRedirect("/articles");
             }
         } else {
             httpServletResponse.sendRedirect("/denied-page");

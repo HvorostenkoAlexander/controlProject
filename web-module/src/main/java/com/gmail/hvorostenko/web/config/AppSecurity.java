@@ -16,7 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @EnableWebSecurity
 @Configuration
-@Order(1)
+@Order
 @RequiredArgsConstructor
 public class AppSecurity extends WebSecurityConfigurerAdapter {
 
@@ -32,10 +32,14 @@ public class AppSecurity extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/administrator/**")
+                .antMatchers("/users/**","/reviews/**")
                 .hasAuthority(RoleUserEnum.ADMINISTRATOR.name())
-                .antMatchers("/customer/**")
+                .antMatchers("/profile/**")
                 .hasAuthority(RoleUserEnum.CUSTOMER_USER.name())
+                .antMatchers("/articles/**")
+                .hasAnyAuthority(RoleUserEnum.SALE_USER.name(), RoleUserEnum.CUSTOMER_USER.name())
+                .antMatchers("/comments/**", "/items/**")
+                .hasAuthority(RoleUserEnum.SALE_USER.name())
                 .antMatchers("/","/login", "/denied-page")
                 .permitAll()
                 .and()

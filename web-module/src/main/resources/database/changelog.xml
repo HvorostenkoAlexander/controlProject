@@ -216,4 +216,30 @@
                                  referencedTableName="users_info"
                                  referencedColumnNames="userInfoId"/>
     </changeSet>
+
+
+
+    <changeSet id="19" author="hvorostenko.alexander@gmail.com">
+        <createTable tableName="items">
+            <column name="id" type="int">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="uuid" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="float">
+                <constraints nullable="false"/>
+            </column>
+            <column name="summary" type="varchar(200)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="20" author="hvorostenko.alexander@gmail.com">
+        <addAutoIncrement tableName="items" columnName="id" columnDataType="int" incrementBy="1"/>
+    </changeSet>
 </databaseChangeLog>
