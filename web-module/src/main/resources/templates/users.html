@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Users list</title>
+</head>
+<body>
+<div>
+    <div>
+        <form id="checked_update_user" th:action="@{/administrator/user-update-role}" th:object="${users}"
+              method="post">
+            <input type="submit" value="Update list user">
+        </form>
+        <table border="1">
+            <thead>
+            <tr>
+                <td>Name</td>
+                <td>Surname</td>
+                <td>Patronymic</td>
+                <td>Email</td>
+                <td>Role</td>
+                <td>Select delete</td>
+                <td>Generation password</td>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="user : ${page.entityList}">
+                <tr>
+                    <td th:text="${user.name}"></td>
+                    <td th:text="${user.surname}"></td>
+                    <td th:text="${user.patronymic}"></td>
+                    <td th:text="${user.email}"></td>
+                    <td>
+
+                        <div th:switch="${user.email}">
+                            <p th:case="${#authentication.name}">Сurrent user is administrator</p>
+                            <p th:case="*">
+                                <input form="checked_update_user" th:name="idUser" th:value="${user.id}" type="hidden">
+                                <select form="checked_update_user" th:name="roleName" class="form-control">
+                                    <option th:text="${user.role}"></option>
+                                    <option th:each="role : ${roles}"
+                                            th:value="${role.name}"
+                                            th:text="${role.name}">
+                                    </option>
+                                </select>
+                            </p>
+                        </div>
+                    </td>
+                    <td><input form="checked_delete_user" th:name="idCheckedDelete" th:value="${user.id}"
+                               type="checkbox">
+                    </td>
+                    <td>
+                        <input form="checked_update_password_user" th:name="idCheckedUpdatePassword"
+                               th:value="${user.id}" type="checkbox">
+                    </td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+        <form id="checked_update_password_user" th:action="@{/administrator/user-update-password}" method="post">
+            <input type="submit" value="Generation password">
+        </form>
+        <form id="checked_delete_user" th:action="@{/administrator/users-delete}" method="post">
+            <input type="submit" value="Delete selected">
+        </form>
+        <form th:action="@{/administrator/user-add}" method="get">
+            <input type="submit" value="Add new user">
+        </form>
+
+    </div>
+</div>
+<div th:if="${usersCountDelete}">
+    <p th:text="${usersCountDelete}"> number of records deleted </p>
+</div>
+<div th:if="${usersCountUpdate}">
+    <p th:text="${usersCountUpdate}"> number of records update </p>
+</div>
+<div th:if="${updatePasswordUserDTO}">
+    <p th:text="${updatePasswordUserDTO.size()}"> number of records deleted </p>
+</div>
+
+<div th:if="${page.entityList.size() > 0}" class="pagination"
+     th:each="pageNumber : ${page.pageNumbers}">
+    <a th:href="@{/administrator/users(page=${pageNumber})}"
+       th:text="${pageNumber}"
+       th:class="${pageNumber} ? active"></a>
+</div>
+<div><a th:href="@{/administrator/reviews}">list reviews</a></div>
+</body>
+<span sec:authorize="isAuthenticated()">
+   Logged user: <span sec:authentication="name"></span>
+Role: <span sec:authentication="principal.authorities"></span>
+    <a th:href="@{/logout}">logout</a>
+</span>
+</html>

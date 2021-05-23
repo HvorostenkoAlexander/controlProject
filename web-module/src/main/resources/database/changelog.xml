@@ -1,0 +1,219 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+   http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="1" author="hvorostenko.alexander@gmail.com">
+        <createTable tableName="roles">
+            <column name="id" type="int">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="hvorostenko.alexander@gmail.com">
+        <createTable tableName="users">
+            <column name="id" type="int">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="surname" type="varchar(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="patronymic" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="varchar(150)">
+            </column>
+            <column name="email" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_info_id" type="int">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="3" author="hvorostenko.alexander@gmail.com">
+        <addAutoIncrement tableName="users" columnName="id" columnDataType="int" incrementBy="1"/>
+        <addAutoIncrement tableName="roles" columnName="id" columnDataType="int" incrementBy="1"/>
+    </changeSet>
+
+    <changeSet id="4" author="hvorostenko.alexander@gmail.com">
+        <addForeignKeyConstraint constraintName="FK_role"
+                                 baseColumnNames="role_id"
+                                 baseTableName="users"
+                                 referencedTableName="roles"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="5" author="hvorostenko.alexander@gmail.com">
+        <createTable tableName="reviews">
+            <column name="id" type="int">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="comment" type="varchar(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_added" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status_show" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="6" author="hvorostenko.alexander@gmail.com">
+        <addAutoIncrement tableName="reviews" columnName="id" columnDataType="int" incrementBy="1"/>
+    </changeSet>
+
+    <changeSet id="7" author="hvorostenko.alexander@gmail.com">
+        <addForeignKeyConstraint constraintName="FK_user"
+                                 baseColumnNames="user_id"
+                                 baseTableName="reviews"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="8" author="hvorostenko.alexander@gmail.com">
+        <insert tableName="roles">
+            <column name="name" value="ADMINISTRATOR"/>
+            <column name="description" value="Administrator"/>
+        </insert>
+        <insert tableName="roles">
+            <column name="name" value="SALE_USER"/>
+            <column name="description" value="Sale User"/>
+        </insert>
+        <insert tableName="roles">
+            <column name="name" value="CUSTOMER_USER"/>
+            <column name="description" value="Customer User"/>
+        </insert>
+        <insert tableName="roles">
+            <column name="name" value="SECURE_API_USER"/>
+            <column name="description" value="Secure API User"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="9" author="hvorostenko.alexander@gmail.com">
+        <insert tableName="users">
+            <column name="name" value="name"/>
+            <column name="surname" value="surname"/>
+            <column name="patronymic" value="user"/>
+            <column name="password" value="$2y$12$L47EdmIWLCnnHFWaDqOdu.tDrGOXn5lPtQ9LhIOi262YLXJB8JupG"/>
+            <column name="email" value="hvorostenko.alexander@gmail.com"/>
+            <column name="role_id" valueComputed="(SELECT id FROM roles WHERE name = 'ADMINISTRATOR')"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="10" author="hvorostenko.alexander@gmail.com">
+        <createTable tableName="articles">
+            <column name="id" type="int">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="summary" type="varchar(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="content" type="varchar(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="11" author="hvorostenko.alexander@gmail.com">
+        <addAutoIncrement tableName="articles" columnName="id" columnDataType="int" incrementBy="1"/>
+    </changeSet>
+
+    <changeSet id="12" author="hvorostenko.alexander@gmail.com">
+        <addForeignKeyConstraint constraintName="FK_user_article"
+                                 baseColumnNames="user_id"
+                                 baseTableName="articles"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+    <changeSet id="13" author="hvorostenko.alexander@gmail.com">
+        <createTable tableName="comments">
+            <column name="id" type="int">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="content" type="varchar(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="article_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="14" author="hvorostenko.alexander@gmail.com">
+        <addAutoIncrement tableName="comments" columnName="id" columnDataType="int" incrementBy="1"/>
+    </changeSet>
+
+    <changeSet id="15" author="hvorostenko.alexander@gmail.com">
+        <addForeignKeyConstraint constraintName="FK_user_comment"
+                                 baseColumnNames="user_id"
+                                 baseTableName="comments"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="16" author="hvorostenko.alexander@gmail.com">
+        <addForeignKeyConstraint constraintName="FK_article"
+                                 baseColumnNames="article_id"
+                                 baseTableName="comments"
+                                 referencedTableName="articles"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="17" author="hvorostenko.alexander@gmail.com">
+        <createTable tableName="users_info">
+            <column name="userInfoId" type="int">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="telephone" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="18" author="hvorostenko.alexander@gmail.com">
+        <addForeignKeyConstraint constraintName="FK_user_info"
+                                 baseColumnNames="user_info_id"
+                                 baseTableName="users"
+                                 referencedTableName="users_info"
+                                 referencedColumnNames="userInfoId"/>
+    </changeSet>
+</databaseChangeLog>
