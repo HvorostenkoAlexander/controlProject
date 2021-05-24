@@ -9,6 +9,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.gmail.hvorostenko.service.constant.ArticleConvertorConst.SUMMARY_BEGIN_INDEX_CONST;
+import static com.gmail.hvorostenko.service.constant.ArticleConvertorConst.SUMMARY_END_INDEX_CONST;
+
 @Component
 public class ArticleConvertor {
     public Article convert(ArticleDTO articleDTO) {
@@ -16,7 +19,12 @@ public class ArticleConvertor {
         article.setId(articleDTO.getId());
         article.setDate(new Date());
         article.setName(articleDTO.getName());
-        article.setSummary(articleDTO.getSummary());
+        if (articleDTO.getContent().length() > SUMMARY_END_INDEX_CONST) {
+            article.setSummary((articleDTO.getContent()
+                    .substring(SUMMARY_BEGIN_INDEX_CONST, SUMMARY_END_INDEX_CONST)));
+        } else {
+            article.setSummary((articleDTO.getContent()));
+        }
         article.setContent(articleDTO.getContent());
         return article;
     }
@@ -42,5 +50,12 @@ public class ArticleConvertor {
             articleDTO.setComments(article.getComments());
         }
         return articleDTO;
+    }
+
+    public Article articleConvert(Article article, ArticleDTO articleDTO) {
+        article.setDate(new Date());
+        article.setName(articleDTO.getName());
+        article.setContent(articleDTO.getContent());
+        return article;
     }
 }

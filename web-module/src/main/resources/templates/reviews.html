@@ -34,7 +34,7 @@
     </tbody>
 </table>
 
-<form id="checked_delete_user" th:action="@{/administrator/reviews/delete}" method="post">
+<form id="checked_delete_user" th:action="@{/reviews/delete}" method="post">
     <input type="submit" value="Delete selected">
 </form>
 
@@ -45,7 +45,7 @@
        th:class="${pageNumber} ? active"></a>
 </div>
 <div>
-    <a th:href="@{/administrator/users}">list user</a>
+    <a th:href="@{/users}">list user</a>
 </div>
 </body>
 </html>

@@ -9,7 +9,6 @@ import com.gmail.hvorostenko.service.PageService;
 import com.gmail.hvorostenko.service.converter.ArticleConvertor;
 import com.gmail.hvorostenko.service.model.ArticleDTO;
 import com.gmail.hvorostenko.service.model.PageDTO;
-import com.gmail.hvorostenko.service.model.UserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -65,5 +64,20 @@ public class ArticleServiceImpl implements ArticleService {
         Article article = articleConvertor.convert(articleDTO);
         article.setUser(user);
         articleRepository.persist(article);
+    }
+
+    @Override
+    @Transactional
+    public Integer deleteArticles(List<String> idArticles) {
+        int resultDelete = articleRepository.delete(idArticles);
+        return resultDelete;
+    }
+
+    @Override
+    @Transactional
+    public void update(ArticleDTO articleDTO, String idArticle) {
+        Article article = articleRepository.findById(Long.parseLong(idArticle));
+        article = articleConvertor.articleConvert(article, articleDTO);
+        articleRepository.merge(article);
     }
 }

@@ -13,7 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
-@Order
+@Order(1)
 @RequiredArgsConstructor
 public class AppAPISecurity extends WebSecurityConfigurerAdapter {
 

@@ -6,7 +6,8 @@
     <title>Articles list</title>
 </head>
 <body>
-<a th:href="@{/customer/profile}">profile</a>
+<a th:href="@{/profile}">profile</a>
+<a sec:authorize="hasAuthority('SALE_USER')" th:href="@{/items}">items</a>
 <table border="1">
     <thead>
     <tr>
@@ -15,6 +16,7 @@
         <td>Author</td>
         <td>Summary</td>
         <td>Content</td>
+        <td>Delete selected</td>
     </tr>
     </thead>
     <tbody>
@@ -25,16 +27,34 @@
             <td th:text="${article.nameAuthor} + ${article.surnameAuthor}"></td>
             <td th:text="${article.summary}"></td>
             <td>
-                <a th:href="@{/customer/article(id=${article.id})}">more details</a>
+                <a th:href="@{/articles/id(id=${article.id})}">more details</a>
+            </td>
+            <td>
+                <div sec:authorize="hasAuthority('CUSTOMER_USER')">
+                    Сurrent user is customer
+                </div>
+                <div sec:authorize="hasAuthority('SALE_USER')">
+                    <input form="checked_delete_article" th:name="idCheckedDelete" th:value="${article.id}"
+                           type="checkbox">
+                </div>
             </td>
         </tr>
     </th:block>
     </tbody>
 </table>
+<div sec:authorize="hasAuthority('SALE_USER')">
+    <form  id="checked_delete_article" th:action="@{/articles/delete}" method="post">
+        <input type="submit" value="Delete selected">
+    </form>
+    <form th:action="@{/articles/add}" method="get">
+        <input type="submit" value="Add new article">
+    </form>
+</div>
+
 
 <div th:if="${page.entityList.size() > 0}" class="pagination"
-     th:each="pageNumber : ${pageNumbers}">
-    <a th:href="@{/customer/articles(page=${pageNumber})}"
+     th:each="pageNumber : ${page.pageNumbers}">
+    <a th:href="@{/articles/(page=${pageNumber})}"
        th:text="${pageNumber}"
        th:class="${pageNumber} ? active"></a>
 </div>
