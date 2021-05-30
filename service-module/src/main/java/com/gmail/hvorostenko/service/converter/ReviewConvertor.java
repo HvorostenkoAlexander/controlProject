@@ -2,9 +2,17 @@ package com.gmail.hvorostenko.service.converter;
 
 import com.gmail.hvorostenko.repository.model.Review;
 import com.gmail.hvorostenko.service.model.ReviewDTO;
+import liquibase.pro.packaged.S;
+import lombok.SneakyThrows;
 import org.apache.commons.lang.time.DateUtils;
 import org.springframework.stereotype.Component;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,7 +25,6 @@ public class ReviewConvertor {
         review.setComment(reviewDTO.getComment());
         review.setDateAdded(new Date());
         review.setStatusShow(reviewDTO.getStatusShow());
-
         return review;
     }
 
@@ -28,12 +35,13 @@ public class ReviewConvertor {
         }).collect(Collectors.toList());
     }
 
+    @SneakyThrows
     public ReviewDTO convert(Review review) {
         ReviewDTO reviewDTO = new ReviewDTO();
         reviewDTO.setId(review.getId());
         reviewDTO.setComment(review.getComment());
-        Date date = DateUtils.truncate(review.getDateAdded(),
-                java.util.Calendar.DAY_OF_MONTH);
+        LocalDate date = LocalDate.ofInstant(
+                review.getDateAdded().toInstant(), ZoneId.systemDefault());
         reviewDTO.setDateAdded(String.valueOf(date));
         reviewDTO.setStatusShow(review.getStatusShow());
         reviewDTO.setNameAuthor(review.getUser().getName());

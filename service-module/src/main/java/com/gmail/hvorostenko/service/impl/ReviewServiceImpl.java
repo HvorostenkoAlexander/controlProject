@@ -1,8 +1,9 @@
 package com.gmail.hvorostenko.service.impl;
 
 import com.gmail.hvorostenko.repository.ReviewRepository;
-import com.gmail.hvorostenko.repository.model.Article;
+import com.gmail.hvorostenko.repository.UserRepository;
 import com.gmail.hvorostenko.repository.model.Review;
+import com.gmail.hvorostenko.repository.model.User;
 import com.gmail.hvorostenko.service.PageService;
 import com.gmail.hvorostenko.service.ReviewService;
 import com.gmail.hvorostenko.service.converter.ReviewConvertor;
@@ -19,7 +20,8 @@ import java.util.List;
 public class ReviewServiceImpl implements ReviewService {
     private final ReviewConvertor reviewConvertor;
     private final ReviewRepository reviewRepository;
-    private PageService<Article> pageService;
+    private final PageService<Review> pageService;
+    private final UserRepository userRepository;
 
     @Override
     @Transactional
@@ -28,7 +30,7 @@ public class ReviewServiceImpl implements ReviewService {
         List<Review> reviews = reviewRepository.findAll(pageCurrent);
         List<ReviewDTO> reviewDTO = reviewConvertor.convert(reviews);
         pageDTO.getEntityList().addAll(reviewDTO);
-        List<Integer> pageNumbers = pageService.countPage(new Article());
+        List<Integer> pageNumbers = pageService.countPage(new Review());
         pageDTO.getPageNumbers().addAll(pageNumbers);
         return pageDTO;
     }
@@ -38,5 +40,15 @@ public class ReviewServiceImpl implements ReviewService {
     public Integer delete(List<String> idReview) {
         int resultDelete = reviewRepository.delete(idReview);
         return resultDelete;
+    }
+
+    @Override
+    @Transactional
+    public void add(ReviewDTO reviewDTO, String nameUser) {
+        reviewDTO.setStatusShow(Boolean.TRUE);
+        Review review = reviewConvertor.convert(reviewDTO);
+        User user = userRepository.getUserByEmail(nameUser);
+        review.setUser(user);
+        reviewRepository.persist(review);
     }
 }

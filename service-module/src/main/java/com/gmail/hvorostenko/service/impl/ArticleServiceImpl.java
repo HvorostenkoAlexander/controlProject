@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
 import java.util.List;
 
 @Service
@@ -61,9 +62,14 @@ public class ArticleServiceImpl implements ArticleService {
     @Transactional
     public void add(Long id, ArticleDTO articleDTO) {
         User user = userRepository.findById(id);
-        Article article = articleConvertor.convert(articleDTO);
-        article.setUser(user);
-        articleRepository.persist(article);
+        try {
+            Article article = articleConvertor.convert(articleDTO);
+            article.setUser(user);
+            articleRepository.persist(article);
+        } catch (ParseException e) {
+            e.getMessage();
+        }
+
     }
 
     @Override
