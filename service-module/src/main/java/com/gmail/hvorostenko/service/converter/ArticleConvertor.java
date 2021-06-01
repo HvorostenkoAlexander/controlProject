@@ -5,8 +5,13 @@ import com.gmail.hvorostenko.service.model.ArticleDTO;
 import org.apache.commons.lang.time.DateUtils;
 import org.springframework.stereotype.Component;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import static com.gmail.hvorostenko.service.constant.ArticleConvertorConst.SUMMARY_BEGIN_INDEX_CONST;
@@ -14,10 +19,11 @@ import static com.gmail.hvorostenko.service.constant.ArticleConvertorConst.SUMMA
 
 @Component
 public class ArticleConvertor {
-    public Article convert(ArticleDTO articleDTO) {
+    public Article convert(ArticleDTO articleDTO) throws ParseException {
         Article article = new Article();
         article.setId(articleDTO.getId());
-        article.setDate(new Date());
+        Date date = new SimpleDateFormat( "yyyy-MM-dd", Locale.ENGLISH ).parse( articleDTO.getDate() );
+        article.setDate(date);
         article.setName(articleDTO.getName());
         if (articleDTO.getContent().length() > SUMMARY_END_INDEX_CONST) {
             article.setSummary((articleDTO.getContent()
@@ -38,8 +44,8 @@ public class ArticleConvertor {
     public ArticleDTO convert(Article article) {
         ArticleDTO articleDTO = new ArticleDTO();
         articleDTO.setId(article.getId());
-        Date date = DateUtils.truncate(article.getDate(),
-                java.util.Calendar.DAY_OF_MONTH);
+        LocalDate date = LocalDate.ofInstant(
+                article.getDate().toInstant(), ZoneId.systemDefault());
         articleDTO.setDate(String.valueOf(date));
         articleDTO.setName(article.getName());
         articleDTO.setContent(article.getContent());

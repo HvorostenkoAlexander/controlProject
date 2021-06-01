@@ -5,6 +5,8 @@ import com.gmail.hvorostenko.service.model.CommentDTO;
 import org.apache.commons.lang.time.DateUtils;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,8 +32,8 @@ public class CommentConvertor {
     public CommentDTO convert(Comment comment) {
         CommentDTO commentDTO = new CommentDTO();
         commentDTO.setId(comment.getId());
-        Date date = DateUtils.truncate(comment.getDate(),
-                java.util.Calendar.DAY_OF_MONTH);
+        LocalDate date = LocalDate.ofInstant(
+                comment.getDate().toInstant(), ZoneId.systemDefault());
         commentDTO.setDate(String.valueOf(date));
         commentDTO.setContent(comment.getContent());
         commentDTO.setNameAuthor(comment.getUser().getName());

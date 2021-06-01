@@ -242,4 +242,50 @@
     <changeSet id="20" author="hvorostenko.alexander@gmail.com">
         <addAutoIncrement tableName="items" columnName="id" columnDataType="int" incrementBy="1"/>
     </changeSet>
+
+    <changeSet id="21" author="hvorostenko.alexander@gmail.com">
+        <createTable tableName="orders">
+            <column name="id" type="int">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="status" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="float">
+                <constraints nullable="false"/>
+            </column>
+            <column name="count" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="item_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="22" author="hvorostenko.alexander@gmail.com">
+        <addForeignKeyConstraint constraintName="FK_user_order"
+                                 baseColumnNames="user_id"
+                                 baseTableName="orders"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="23" author="hvorostenko.alexander@gmail.com">
+        <addForeignKeyConstraint constraintName="FK_item"
+                                 baseColumnNames="item_id"
+                                 baseTableName="orders"
+                                 referencedTableName="items"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="24" author="hvorostenko.alexander@gmail.com">
+        <addAutoIncrement tableName="orders" columnName="id" columnDataType="int" incrementBy="1"/>
+    </changeSet>
 </databaseChangeLog>

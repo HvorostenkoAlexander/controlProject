@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>orders</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+</head>
+<body>
+<div class="p-3 border bg-light">
+    <p class="alert alert-primary" role="alert" sec:authorize="isAuthenticated()">
+        Logged user: <span sec:authentication="name"></span>
+        Role: <span sec:authentication="principal.authorities"></span>
+    </p>
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link  " aria-current="page" th:href="@{/articles}">list articles</a>
+        </li>
+        <li  sec:authorize="hasAuthority('CUSTOMER_USER')"  class="nav-item">
+            <a class="nav-link " aria-current="page" th:href="@{/profile}">profile</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" th:href="@{/orders/user}">orders</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " aria-current="page" th:href="@{/items}">items</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " aria-current="page" th:href="@{/logout}">logout</a>
+        </li>
+    </ul>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <td>Number order</td>
+            <td>Status</td>
+            <td>Name item</td>
+            <td>Name user</td>
+            <td>Telephone user</td>
+            <td>Count items</td>
+            <td>Total price</td>
+            <td sec:authorize="hasAuthority('SALE_USER')">Details</td>
+        </tr>
+        </thead>
+        <tbody>
+        <th:block th:each="order : ${page.entityList}">
+            <tr>
+                <td th:text="${order.id}"></td>
+                <td th:text="${order.status}"></td>
+                <td th:text="${order.nameItem}"></td>
+                <td th:text="${order.nameUser}"></td>
+                <td th:text="${order.telephoneUser}"></td>
+                <td th:text="${order.count}"></td>
+                <td th:text="${order.price}"></td>
+                <td sec:authorize="hasAuthority('SALE_USER')">
+                    <a th:href="@{/orders/id(id=${order.id})}">more details</a>
+                </td>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+    <nav aria-label="Page navigation example">
+        <ul th:if="${page.entityList.size() > 0}" class="pagination">
+            <th:block th:each="pageNumber : ${page.pageNumbers}">
+                <li class="page-item">
+                    <a class="page-link active"
+                       th:href="@{/orders/(page=${pageNumber})}"
+                       th:text="${pageNumber}"
+                    ></a></li>
+            </th:block>
+        </ul>
+    </nav>
+</div>
+</body>
+</html>

@@ -1,75 +1,100 @@
 <!DOCTYPE html>
-<html lang="en"  xmlns:th="https://www.thymeleaf.org/"
+<html lang="en" xmlns:th="https://www.thymeleaf.org/"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
     <title>items</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 </head>
 <body>
-<table border="1">
-    <thead>
-    <tr>
-        <td>Name</td>
-        <td>Unique number</td>
-        <td>Price</td>
-        <td>Summary</td>
-        <td>Details</td>
-        <td>Delete selected</td>
-        <td>Copy selected</td>
-    </tr>
-    </thead>
-    <tbody>
-    <th:block th:each="item : ${page.entityList}">
+<div class="p-3 border bg-light">
+    <p class="alert alert-primary" role="alert" sec:authorize="isAuthenticated()">
+        Logged user: <span sec:authentication="name"></span>
+        Role: <span sec:authentication="principal.authorities"></span>
+    </p>
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link  " aria-current="page" th:href="@{/articles}">list articles</a>
+        </li>
+        <li sec:authorize="hasAuthority('CUSTOMER_USER')" class="nav-item">
+            <a class="nav-link " aria-current="page" th:href="@{/profile}">profile</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " aria-current="page" th:href="@{/orders/user}">orders</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" th:href="@{/items}">items</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " aria-current="page" th:href="@{/logout}">logout</a>
+        </li>
+    </ul>
+    <div sec:authorize="hasAuthority('SALE_USER')" class="btn-group">
+        <form id="checked_delete_item" th:action="@{/items/delete}" method="post">
+            <input  class="m-1 btn btn-primary" type="submit" value="Delete selected">
+        </form>
+        <form id="checked_copy_item" th:action="@{/items/add-copy}" method="get">
+            <input  class="m-1 btn btn-primary" type="submit" value="Copy new article">
+        </form>
+    </div>
+    <table class="table table-hover">
+        <thead>
         <tr>
-            <td th:text="${item.name}"></td>
-            <td th:text="${item.uuid}"></td>
-            <td th:text="${item.price}"></td>
-            <td th:text="${item.summary}"></td>
-            <td>
-                <a th:href="@{/items/id(id=${item.id})}">more details</a>
-            </td>
-            <td>
-                <div sec:authorize="hasAuthority('CUSTOMER_USER')">
-                    Сurrent user is customer
-                </div>
-                <div sec:authorize="hasAuthority('SALE_USER')">
-                    <input form="checked_delete_item" th:name="idCheckedDelete" th:value="${item.id}"
-                           type="checkbox">
-                </div>
-            </td>
-            <td>
-                <div sec:authorize="hasAuthority('CUSTOMER_USER')">
-                    Сurrent user is customer
-                </div>
-                <div sec:authorize="hasAuthority('SALE_USER')">
-                    <input form="checked_copy_item" th:name="idCheckedCopy" th:value="${item.id}"
-                           type="checkbox">
-                </div>
-            </td>
+            <td>Name</td>
+            <td>Unique number</td>
+            <td>Price</td>
+            <td>Summary</td>
+            <td>Details</td>
+            <td sec:authorize="hasAuthority('SALE_USER')">Delete selected</td>
+            <td sec:authorize="hasAuthority('SALE_USER')">Copy selected</td>
+            <td sec:authorize="hasAuthority('CUSTOMER_USER')">Add order</td>
         </tr>
-    </th:block>
-    </tbody>
-</table>
-<div sec:authorize="hasAuthority('SALE_USER')">
-    <form  id="checked_delete_item" th:action="@{/items/delete}" method="post">
-        <input type="submit" value="Delete selected">
-    </form>
-    <form id="checked_copy_item" th:action="@{/items/add-copy}" method="get">
-        <input type="submit" value="Copy new article">
-    </form>
+        </thead>
+        <tbody>
+        <th:block th:each="item : ${page.entityList}">
+            <tr>
+                <td th:text="${item.name}"></td>
+                <td th:text="${item.uuid}"></td>
+                <td th:text="${item.price}"></td>
+                <td th:text="${item.summary}"></td>
+                <td>
+                    <a th:href="@{/items/id(id=${item.id})}">more details</a>
+                </td>
+                <td sec:authorize="hasAuthority('SALE_USER')">
+                    <div >
+                        <input form="checked_delete_item" th:name="idCheckedDelete" th:value="${item.id}"
+                               type="checkbox">
+                    </div>
+                </td>
+                <td sec:authorize="hasAuthority('SALE_USER')">
+                    <div >
+                        <input form="checked_copy_item" th:name="idCheckedCopy" th:value="${item.id}"
+                               type="checkbox">
+                    </div>
+                </td>
+                <td sec:authorize="hasAuthority('CUSTOMER_USER')">
+                    <form th:action="@{/orders/add}" method="post" class="btn-group">
+                        <input th:name="idItem" th:value="${item.id}" type="hidden">
+                        <input  class="  form-control w-50" placeholder="Quantity" th:name="count" type="text"/>
+                        <input class="  btn btn-primary" type="submit" value="add order">
+                    </form>
+                </td>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+    <nav aria-label="Page navigation example">
+        <ul th:if="${page.entityList.size() > 0}" class="pagination">
+            <th:block th:each="pageNumber : ${page.pageNumbers}">
+                <li class="page-item">
+                    <a class="page-link active"
+                       th:href="@{/items/(page=${pageNumber})}"
+                       th:text="${pageNumber}"
+                    ></a></li>
+            </th:block>
+        </ul>
+    </nav>
 </div>
-
-<div th:if="${page.entityList.size() > 0}" class="pagination"
-     th:each="pageNumber : ${page.pageNumbers}">
-    <a th:href="@{/items/(page=${pageNumber})}"
-       th:text="${pageNumber}"
-       th:class="${pageNumber} ? active"></a>
-</div>
-</body>
-<span sec:authorize="isAuthenticated()">
-   Logged user: <span sec:authentication="name"></span>
-Role: <span sec:authentication="principal.authorities"></span>
-    <a th:href="@{/logout}">logout</a>
-</span>
 </body>
 </html>

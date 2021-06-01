@@ -54,7 +54,7 @@ public class ItemServiceImpl implements ItemService {
         for (String id : idItems) {
             Item item = itemRepository.findById(Long.parseLong(id));
             Item itemCopy = new Item();
-            itemCopy.setName(item.getName());
+            itemCopy.setName("Copy " +item.getName());
             itemCopy.setSummary(item.getSummary());
             itemCopy.setPrice(item.getPrice());
             itemCopy.setUuid(UUID.randomUUID().toString());
