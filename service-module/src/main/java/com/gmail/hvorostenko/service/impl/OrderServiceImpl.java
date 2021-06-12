@@ -51,6 +51,7 @@ public class OrderServiceImpl implements OrderService {
     public void updateStatus(String status, String idOrder) {
         Order order = orderRepository.findById(Long.parseLong(idOrder));
         order.setStatus(OrderStatusEnum.valueOf(status));
+        order.setDate(new Date());
         orderRepository.merge(order);
     }
 

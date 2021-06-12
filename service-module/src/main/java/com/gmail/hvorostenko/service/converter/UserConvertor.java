@@ -3,6 +3,8 @@ package com.gmail.hvorostenko.service.converter;
 import com.gmail.hvorostenko.repository.model.Role;
 import com.gmail.hvorostenko.repository.model.RoleEnum;
 import com.gmail.hvorostenko.repository.model.User;
+import com.gmail.hvorostenko.repository.model.UserInfo;
+import com.gmail.hvorostenko.service.model.ProfileDTO;
 import com.gmail.hvorostenko.service.model.UserDTO;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
@@ -16,11 +18,24 @@ import java.util.stream.IntStream;
 @Component
 public class UserConvertor {
 
-    public User profileConvert(User user, UserDTO userDTO) {
+    public ProfileDTO userConvert(UserDTO user) {
+        ProfileDTO profileDTO = new ProfileDTO();
+        profileDTO.setId(user.getId());
+        profileDTO.setName(user.getName());
+        profileDTO.setSurname(user.getSurname());
+        profileDTO.setAddress(user.getAddress());
+        profileDTO.setTelephone(user.getTelephone());
+        return profileDTO;
+    }
+
+    public User profileConvert(User user, ProfileDTO userDTO) {
         user.setName(userDTO.getName());
         user.setSurname(userDTO.getSurname());
-        user.getUserInfo().setAddress(userDTO.getAddress());
-        user.getUserInfo().setTelephone(userDTO.getTelephone());
+        UserInfo userInfo = new UserInfo();
+        userInfo.setAddress(userDTO.getAddress());
+        userInfo.setTelephone(userDTO.getTelephone());
+        userInfo.setUserInfoId(user.getId());
+        user.setUserInfo(userInfo);
         return user;
     }
 

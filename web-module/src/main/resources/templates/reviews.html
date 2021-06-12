@@ -42,7 +42,7 @@
             <tbody>
             <th:block th:each="review : ${page.entityList}">
                 <tr>
-                    <td th:text="${review.nameAuthor} + ${review.surnameAuthor} + ${review.patronymicAuthor}"></td>
+                    <td th:text="${review.nameAuthor} +' '+ ${review.surnameAuthor} +' '+ ${review.patronymicAuthor}"></td>
                     <td th:text="${review.comment}"></td>
                     <td th:text="${review.dateAdded}"></td>
                     <td>
@@ -61,7 +61,7 @@
                 <th:block th:each="pageNumber : ${page.pageNumbers}">
                     <li class="page-item">
                         <a class="page-link active"
-                           th:href="@{/users/(page=${pageNumber})}"
+                           th:href="@{/reviews/(page=${pageNumber})}"
                            th:text="${pageNumber}"
                         ></a></li>
                 </th:block>

@@ -9,6 +9,7 @@ import com.gmail.hvorostenko.service.UserService;
 import com.gmail.hvorostenko.service.converter.UserConvertor;
 import com.gmail.hvorostenko.service.email.MailSender;
 import com.gmail.hvorostenko.service.model.PageDTO;
+import com.gmail.hvorostenko.service.model.ProfileDTO;
 import com.gmail.hvorostenko.service.model.UserDTO;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.RandomStringUtils;
@@ -130,7 +131,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserDTO update(UserDTO userDTO, String idUser) {
+    public UserDTO update(ProfileDTO userDTO, String idUser) {
         User user = userRepository.findById(Long.parseLong(idUser));
         user = userConvertor.profileConvert(user, userDTO);
         userRepository.merge(user);

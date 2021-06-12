@@ -2,6 +2,7 @@ package com.gmail.hvorostenko.service.converter;
 
 import com.gmail.hvorostenko.repository.model.Article;
 import com.gmail.hvorostenko.service.model.ArticleDTO;
+import lombok.SneakyThrows;
 import org.apache.commons.lang.time.DateUtils;
 import org.springframework.stereotype.Component;
 
@@ -19,10 +20,11 @@ import static com.gmail.hvorostenko.service.constant.ArticleConvertorConst.SUMMA
 
 @Component
 public class ArticleConvertor {
+
     public Article convert(ArticleDTO articleDTO) throws ParseException {
         Article article = new Article();
         article.setId(articleDTO.getId());
-        Date date = new SimpleDateFormat( "yyyy-MM-dd", Locale.ENGLISH ).parse( articleDTO.getDate() );
+        Date date = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(articleDTO.getDate());
         article.setDate(date);
         article.setName(articleDTO.getName());
         if (articleDTO.getContent().length() > SUMMARY_END_INDEX_CONST) {

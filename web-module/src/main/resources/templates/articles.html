@@ -20,8 +20,11 @@
         <li sec:authorize="hasAuthority('CUSTOMER_USER')" class="nav-item">
             <a class="nav-link " aria-current="page" th:href="@{/profile}">profile</a>
         </li>
-        <li  class="nav-item">
+        <li  sec:authorize="hasAuthority('CUSTOMER_USER')"  class="nav-item">
             <a class="nav-link " aria-current="page" th:href="@{/orders/user}">orders</a>
+        </li>
+        <li  sec:authorize="hasAuthority('SALE_USER')"  class="nav-item">
+            <a class="nav-link " aria-current="page" th:href="@{/orders}">orders</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" aria-current="page" th:href="@{/items}">items</a>

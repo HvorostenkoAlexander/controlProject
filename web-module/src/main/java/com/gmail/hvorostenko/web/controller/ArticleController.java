@@ -68,7 +68,7 @@ public class ArticleController {
     public String addArticleSubmit(@ModelAttribute("article") @Valid ArticleDTO articleDTO,
                                    BindingResult bindingResult,
                                    Principal principal,
-                                   final RedirectAttributes redirectAttributes) {
+                                   final RedirectAttributes redirectAttributes) throws Exception {
         if (bindingResult.hasErrors()) {
             return "article_add";
         }

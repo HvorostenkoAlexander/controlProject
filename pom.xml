@@ -23,6 +23,7 @@
     <description>Demo project for Spring Boot</description>
     <properties>
         <java.version>11</java.version>
+        <mysql.testcontainer.version>1.15.3</mysql.testcontainer.version>
     </properties>
     <dependencies>
         <dependency>
@@ -90,6 +91,17 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${mysql.testcontainer.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>mysql</artifactId>
+            <version>${mysql.testcontainer.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

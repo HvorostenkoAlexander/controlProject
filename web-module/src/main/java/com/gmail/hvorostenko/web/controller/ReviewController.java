@@ -37,8 +37,8 @@ public class ReviewController {
 
     @PostMapping("/delete")
     public RedirectView deleteReview(@RequestParam("idCheckedDelete") List<String> idReview,
-                                   Principal principal,
-                                   final RedirectAttributes redirectAttributes) {
+                                     Principal principal,
+                                     final RedirectAttributes redirectAttributes) {
         if (!idReview.isEmpty()) {
             Integer reviewCountDelete = reviewService.delete(idReview);
             redirectAttributes.addFlashAttribute("reviewCountDelete", reviewCountDelete);
@@ -54,9 +54,8 @@ public class ReviewController {
 
     @PostMapping("/add")
     public String addReview(@ModelAttribute("review") @Valid ReviewDTO reviewDTO,
-                                  BindingResult bindingResult,
-                            Principal principal,
-                                     final RedirectAttributes redirectAttributes) {
+                            BindingResult bindingResult,
+                            Principal principal) {
         if (bindingResult.hasErrors()) {
             return "review_add";
         }
