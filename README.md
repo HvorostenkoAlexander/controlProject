@@ -57,7 +57,7 @@ I would like to thank my teacher Artem Perevoznikov for invaluable help througho
 I also want to thank my classmates.
 
 ## Contact
-Created by [@hvorostenko.alexandergmail.com] - feel free to contact me!
+Created by [@hvorostenko.alexandergmail.com](https://t.me/Alhvo) - feel free to contact me!
 
 
 
