@@ -9,13 +9,11 @@ public class LoginController {
 
     @GetMapping("/denied-page")
     public String getFailPage(Model model) {
-        return "denied";
+        return "denied_page";
     }
 
     @GetMapping("/login")
     public String getLoginPage(Model model) {
         return "login";
     }
-
-
 }

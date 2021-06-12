@@ -1,14 +1,16 @@
 package com.gmail.hvorostenko.service.model;
 
+import liquibase.pro.packaged.L;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
 @Getter
 @Setter
-public class UserDTO {
+public class ProfileDTO {
+
     private Long id;
     @NotNull
     @Size(min=2, max=20)
@@ -18,13 +20,8 @@ public class UserDTO {
     private String surname;
     @NotNull
     @Size(min=2, max=20)
-    private String patronymic;
-    @NotNull
-    @Email
-    @Size(min=2, max=50)
-    private String email;
     private String telephone;
+    @NotNull
+    @Size(min=2, max=50)
     private String address;
-    private String role;
-
 }

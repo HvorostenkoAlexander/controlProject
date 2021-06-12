@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>error</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <h1>Thymeleaf Error Page</h1>
+    </div>
+    <div class="row">It apperrs Either something went wrong or the page
+        doesn't exist anymore.....</div>
+    <div class="row rowDesign">
+        <div class="col-md-4 ml-auto">
+            <span class="legend">Date</span>
+        </div>
+        <div class="col-md-8">
+            <span th:text="${timestamp}"></span>
+        </div>
+    </div>
+    <div class="row rowDesign">
+        <div class="col-md-4 ml-auto">
+            <span class="legend">Path</span>
+        </div>
+        <div class="col-md-8">
+            <span th:text="${path}"></span>
+        </div>
+    </div>
+    <div class="row rowDesign">
+        <div class="col-md-4 ml-auto">
+            <span class="legend">Error</span>
+        </div>
+        <div class="col-md-8">
+            <span th:text="${error}"></span>
+        </div>
+    </div>
+    <div class="row rowDesign">
+        <div class="col-md-4 ml-auto">
+            <span class="legend">Status</span>
+        </div>
+        <div class="col-md-8">
+            <span th:text="${status}"></span>
+        </div>
+    </div>
+    <div class="row rowDesign">
+        <div class="col-md-4 ml-auto">
+            <span class="legend">Message</span>
+        </div>
+        <div class="col-md-8">
+            <span th:text="${message}"></span>
+        </div>
+    </div>
+    <div class="row rowDesign">
+        <div class="col-md-4 ml-auto">
+            <span class="legend">Exception</span>
+        </div>
+        <div class="col-md-8">
+            <span th:text="${exception}"></span>
+        </div>
+    </div>
+    <div class="row rowDesign">
+        <div class="col-md-4 ml-auto">
+            <span class="legend">Trace</span>
+        </div>
+        <div class="col-md-8">
+            <span th:text="${trace}"></span>
+        </div>
+    </div>
+</div>
+</body>
+</html>

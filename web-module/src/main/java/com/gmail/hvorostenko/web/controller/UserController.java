@@ -1,7 +1,6 @@
 package com.gmail.hvorostenko.web.controller;
 
 import com.gmail.hvorostenko.repository.model.User;
-import com.gmail.hvorostenko.service.PageService;
 import com.gmail.hvorostenko.service.RoleService;
 import com.gmail.hvorostenko.service.UserService;
 import com.gmail.hvorostenko.service.model.PageDTO;
@@ -80,10 +79,13 @@ public class UserController {
 
     @PostMapping("/add")
     public String addUserSubmit(@ModelAttribute("user") @Valid UserDTO userDTO,
-                                @RequestParam("idRole") String idRole,
                                 BindingResult bindingResult,
+                                Model model,
+                                @RequestParam("idRole") String idRole,
                                 final RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
+            List<RoleDTO> roles = roleService.findAll();
+            model.addAttribute("roles", roles);
             return "user_add";
         }
         UserDTO addUser = userService.add(userDTO, idRole);

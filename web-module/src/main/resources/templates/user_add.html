@@ -13,37 +13,49 @@
         <div class=" row justify-content-md-center">
             <table class="table m-3 w-50">
                 <tr>
-                    <td>Name:</td>
-                    <td><input type="text" class="form-control" th:field="*{name}"/></td>
-                    <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</td>
+                    <div class="form-group">
+                        <td>Name:</td>
+                        <td><input type="text" class="form-control m-1" th:field="*{name}"/>
+                            <small class="p-1 alert-primary" th:if="${#fields.hasErrors('name')}"
+                                   th:errors="*{name}">Name Error</small>
+                        </td>
+                    </div>
                 </tr>
                 <tr>
                     <td>Surname:</td>
-                    <td><input type="text" class="form-control" th:field="*{surname}"/></td>
-                    <td th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">surname Error</td>
+                    <td><input type="text" class="form-control m-1" th:field="*{surname}"/>
+                        <small class="p-1 alert-primary" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">surname
+                            Error</small>
+                    </td>
                 </tr>
                 <tr>
                     <td>Patronymic:</td>
-                    <td><input type="text" class="form-control" th:field="*{patronymic}"/></td>
-                    <td th:if="${#fields.hasErrors('patronymic')}" th:errors="*{patronymic}">patronymic Error</td>
+                    <td><input type="text" class="form-control m-1" th:field="*{patronymic}"/>
+                        <small class="p-1 alert-primary" th:if="${#fields.hasErrors('patronymic')}"
+                               th:errors="*{patronymic}">patronymic Error</small>
+
+                    </td>
                 </tr>
                 <tr>
                     <td>Email:</td>
-                    <td><input type="email" class="form-control" th:field="*{email}"/></td>
-                    <td th:if="${#fields.hasErrors('email')}" th:errors="*{email}">email Error</td>
+                    <td>
+                        <input type="email" class="form-control m-1" th:field="*{email}"/>
+                        <small class="p-1 alert-primary" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">email
+                            Error</small>
+                    </td>
                 </tr>
                 <tr>
                     <td>Role:</td>
                     <td>
-                        <select class="form-select" th:name="idRole">
+                        <select class="form-select " th:name="idRole ">
                             <option th:each="role : ${roles}"
                                     th:value="${role.id}"
                                     th:text="${role.name}">
                             </option>
                         </select>
-
+                        <small class="p-1 alert-primary" th:if="${#fields.hasErrors('role')}" th:errors="*{role}">role
+                            Error</small>
                     </td>
-                    <td th:if="${#fields.hasErrors('role')}" th:errors="*{role}">role Error</td>
                 </tr>
                 <tr>
                     <td>

@@ -2,6 +2,7 @@ package com.gmail.hvorostenko.service;
 
 import com.gmail.hvorostenko.repository.model.User;
 import com.gmail.hvorostenko.service.model.PageDTO;
+import com.gmail.hvorostenko.service.model.ProfileDTO;
 import com.gmail.hvorostenko.service.model.UserDTO;
 
 import java.util.List;
@@ -15,5 +16,5 @@ public interface UserService {
     String generateCommonLangPassword();
     void sendMessage(User user);
     UserDTO getUserByEmail(String nameUser);
-    UserDTO update(UserDTO userDTO, String idUser);
+    UserDTO update(ProfileDTO userDTO, String idUser);
 }
