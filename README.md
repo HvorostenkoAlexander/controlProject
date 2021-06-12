@@ -13,15 +13,54 @@
 * [Acknowledgements](#acknowledgements)
 * [Contact](#contact)
 
-
 ## General Information
 - Provide general information about your project here.
 - What problem does it (intend to) solve?
 - What is the purpose of your project?
 - Why did you undertake it?
 
-
 ## Technologies Used
-- Java - version 11
+- Java 11
+- Spring (Boot, MVC, Security) 2.4.2
+- Hibernate
+- Thymeleaf
+- Lombock 1.18.20
+- Docker Desktop 3.3.3
+- Git
+- Maven
+- Liquibase
+
+## Features
+List the ready features here:
+- Awesome feature 1
+- Awesome feature 2
+- Awesome feature 3
+
+## Screenshots
+![Example screenshot](./img/screenshot.png)
+
+## Setup
+Using Maven, build the project (mvn clean package command), then run docker-compose. 
+Then run the app and you can go to the url: http: // localhost: 8080 /
+
+## Usage
+The program serves to demonstrate the skills mastered by the author and is intended for use for informational purposes.
+
+## Project Status
+Project is completed. But the improvement work continues.
+
+## Room for Improvement
+There is a goal to add the possibility of self-registration of new users.
+
+## Acknowledgements
+I would like to thank my teacher Artem Perevoznikov for invaluable help throughout the training. 
+I also want to thank my classmates.
+
+## Contact
+Created by [@hvorostenko.alexandergmail.com] - feel free to contact me!
+
+
+
+
 
 
